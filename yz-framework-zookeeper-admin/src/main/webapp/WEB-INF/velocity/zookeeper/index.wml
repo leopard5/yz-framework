@@ -1,0 +1,198 @@
+#set($layout = "simple-layout.wml") #set($webroot =${config.getProperty("zk-admin.webroot")})
+<div data-options="region:'north',border:false" style="height: 40px; background: #B3DFDA; padding: 10px">zookeeper管理中心</div>
+<div data-options="region:'center',title:'zookeeper管理'" style="padding: 10px;">
+ <div id="divAddNodePanel" style="display: none;">
+  <table>
+   <tr>
+    <td>父节点</td>
+    <td><input name="parentNode" readonly="readonly" /></td>
+   </tr>
+   <tr>
+    <td>父节点</td>
+    <td><input name="node" /></td>
+   </tr>
+   <tr>
+    <td></td>
+    <td><a id="btnAddNode" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-add'">创建节点</a></td>
+   </tr>
+  </table>
+ </div>
+ <table style="width: 100%; height: 100%">
+  <tr>
+   <td style="width: 300px;" valign="top">
+    <div id="divTree" style="float: left; width: 100%; border: inset 1px #ccc;overflow:auto ;">
+     <ul id="tt">
+     </ul>
+     <div id="mm" class="easyui-menu" data-options="onClick:menuHandler" style="width: 120px; overflow: scroll;">
+      <div data-options="iconCls:'icon-add',name:'newBrother'">新建兄弟节点</div>
+      <div class="menu-sep"></div>
+      <div data-options="iconCls:'icon-mini-add',name:'newChild'">新建子节点</div>
+      <div class="menu-sep"></div>
+      <div data-options="iconCls:'icon-save',name:'delete'">删除</div>
+     </div>
+    </div>
+   </td>
+   <td valign="top">
+     <table id="divEditPanel" style="width: 100%;height: 100%">
+      <tr>
+       <td valign="top"  style="width: 100%;height: 90%">
+       <TEXTAREA name="data" rows="10" cols="100%" style="width: 100%;height: 100%;font-size: 14px;"></TEXTAREA>
+      </tr>
+      <tr>
+       <td valign="top"><a id="btnSaveData" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-save'">保存数据</a></td>
+      </tr>
+     </table>
+   </td>
+  </tr>
+ </table>
+</div>
+<script>
+	function menuHandler(item) {
+		if (item.name == "delete") {
+			deleteNode();
+		} else if (item.name == "newBrother") {
+			addBrotherNode();
+		} else if (item.name == "newChild") {
+			addChildNode();
+		}
+
+	}
+
+	function deleteNode() {
+		var selectNode = $('#tt').tree("getSelected");
+		$.messager.confirm('确认', '您确认想要删除节点【' + selectNode.fullPath + '】吗？',
+				function(r) {
+					if (r) {
+						$.get("${webroot}/zoo/delete.html", {
+							"fullPath" : selectNode.fullPath
+						}, function(data) {
+							if (data == "") {
+								$("#tt").tree("remove", selectNode.target);
+
+								$.messager.alert("删除成功", "删除成功！");
+							} else {
+								$.messager.alert("删除失败", data);
+							}
+						})
+					}
+				});
+	}
+	function addBrotherNode() {
+		var selectNode = $('#tt').tree("getSelected");
+		var parentNode = $('#tt').tree("getParent", selectNode.target);
+		var tbParentNode = $("#divAddNodePanel").find(
+				"input[name='parentNode']");
+		if (parentNode == null) {
+			tbParentNode.val("/");
+		} else {
+			tbParentNode.val(parentNode.fullPath);
+		}
+		showAddNode("添加兄弟节点");
+
+	}
+
+	function addChildNode() {
+		var selectNode = $('#tt').tree("getSelected");
+		var tbParentNode = $("#divAddNodePanel").find(
+				"input[name='parentNode']");
+		tbParentNode.val(selectNode.fullPath);
+		showAddNode("添加子节点");
+
+	}
+	function showAddNode(title) {
+		var tbNode = $("#divAddNodePanel").find("input[name='node']");
+		tbNode.val("");
+		tbNode.select();
+		$("#divAddNodePanel").show();
+		$("#divAddNodePanel").dialog({
+			title : title,
+			width : 400,
+			height : 200,
+			closed : false,
+			cache : false,
+			modal : true
+		});
+	}
+
+	function loadTree() {
+		$.get("${webroot}/zoo/tree.html", function(data) {
+			$('#tt').tree("loadData", data)
+		}, "json");
+	}
+
+	$(function() {
+		var height = $("#divTree").parent().height() - 20;
+		$("#divTree").height(height);
+		$('#tt').tree({
+			animate : true,
+			lines : true,
+			onClick : function(node) {
+				var tbData = $("#divEditPanel").find("textarea[name='data']");
+				tbData.val(node.data);
+			},
+			onContextMenu : function(e, node) {
+				e.preventDefault();
+				// 查找节点
+				$('#tt').tree('select', node.target);
+				// 显示快捷菜单
+				$('#mm').menu('show', {
+					left : e.pageX,
+					top : e.pageY
+				});
+			}
+		});
+
+		loadTree();
+
+		$("#btnSaveData").click(function() {
+			var tbData = $("#divEditPanel").find("textarea[name='data']");
+			var selectNode = $('#tt').tree("getSelected");
+			$.post("${webroot}/zoo/setNodeData.html", {
+				fullPath : selectNode.fullPath,
+				data : tbData.val()
+			}, function(data) {
+				if (data == "") {
+					selectNode.data = tbData.val();
+					$.messager.alert("成功", "设置数据成功");
+				} else {
+					$.messager.alert("失败", data);
+				}
+			})
+		});
+		$("#btnAddNode").click(
+				function() {
+
+					var tbNode = $("#divAddNodePanel").find(
+							"input[name='node']");
+
+					if (tbNode.val() == "") {
+						$.messager.alert("提示", "请填写路径名称");
+						return;
+					}
+
+					var tbParentNode = $("#divAddNodePanel").find(
+							"input[name='parentNode']");
+					var param = {
+						parentFullPath : tbParentNode.val(),
+						path : tbNode.val()
+					};
+					$.post("${webroot}/zoo/addNode.html", param, function(
+							result) {
+						var selectedNode = $('#tt').tree("getSelected");
+						if (selectedNode.fullPath == param.parentFullPath) {
+							$('#tt').tree('append', {
+								parent : selectedNode.target,
+								data : result
+							});
+						} else {
+							$('#tt').tree('insert', {
+								before : selectedNode.target,
+								data : result
+							});
+						}
+
+						$("#divAddNodePanel").dialog("close");
+					}, "json")
+				});
+	})
+</script>

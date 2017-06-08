@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+<log4j:configuration>
+	<appender name="CONSOLE" class="org.apache.log4j.ConsoleAppender">
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d - %c -%-4r [%t] %-5p %x - %m%n" />
+		</layout>
+		<!--限制输出级别 -->
+		<filter class="org.apache.log4j.varia.LevelRangeFilter">
+			<param name="LevelMax" value="ERROR" />
+			<param name="LevelMin" value="INFO" />
+		</filter>
+	</appender>
+
+	<appender name="FILE_DEBUG" class="org.apache.log4j.DailyRollingFileAppender">
+		<errorHandler class="org.apache.log4j.helpers.OnlyOnceErrorHandler" />
+		<param name="File" value="${catalina.base}/logs/logging/debug.log" />
+		<param name="Append" value="true" />
+		<param name="Threshold" value="debug" />
+		<param name="DatePattern" value="'.'yyyy-MM-dd'.log'" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d %-5p [%c] %m%n" />
+		</layout>
+	</appender>
+
+	<appender name="FILE_ERROR" class="org.apache.log4j.DailyRollingFileAppender">
+		<errorHandler class="org.apache.log4j.helpers.OnlyOnceErrorHandler" />
+		<param name="File" value="${catalina.base}/logs/logging/error.log" />
+		<param name="Append" value="true" />
+		<param name="Threshold" value="ERROR" />
+		<param name="DatePattern" value="'.'yyyy-MM-dd'.log'" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d %-5p [%c] %m%n" />
+		</layout>
+	</appender>
+
+	<appender name="FILE_ALL" class="org.apache.log4j.DailyRollingFileAppender">
+		<errorHandler class="org.apache.log4j.helpers.OnlyOnceErrorHandler" />
+		<param name="File" value="${catalina.base}/logs/logging/all.log" />
+		<param name="Append" value="true" />
+		<param name="DatePattern" value="'.'yyyy-MM-dd'.log'" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d %-5p [%c] %m%n" />
+		</layout>
+	</appender>
+
+	<appender name="SYSLOG" class="org.apache.log4j.net.SyslogAppender">
+		<!-- 指定日志输出级别 -->
+		<param name="Threshold" value="INFO" />
+		<param name="syslogHost" value="192.168.0.67" />
+		<param name="facility" value="user" />
+		<param name="facilityPrinting" value="false" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value=" %m" />
+		</layout>
+	</appender>
+
+	<category name="com.yz.framework.queue,com.yz.framework.bizlogging.consumer">
+		<priority value="debug" />
+		<appender-ref ref="CONSOLE" />
+		<appender-ref ref="FILE_DEBUG" />
+	</category>
+
+	<root>
+		<priority value="INFO" />
+		<appender-ref ref="CONSOLE" />
+		<appender-ref ref="FILE_ALL" />
+		<appender-ref ref="FILE_ERROR" />
+		<appender-ref ref="SYSLOG" />
+	</root>
+
+</log4j:configuration>  

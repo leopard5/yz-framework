@@ -1,0 +1,7 @@
+<!DOCTYPE html>
+<html>
+<head>#parse("head.wml")
+</head>
+<body class="easyui-layout">$screen_content
+</body>
+</html>

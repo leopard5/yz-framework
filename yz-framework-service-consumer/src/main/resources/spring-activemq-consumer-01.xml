@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+  <bean id="jmsConnectionFactoryForBroker01" class="com.yz.framework.queue.activemq.SecureActiveMQConnectionFactory">
+    <property name="brokerURL" value="${queue.service.broker01.brokerURL}" />
+    <property name="userName" value="${queue.service.broker01.userName}" />
+    <property name="password" value="${queue.service.broker01.password}" />
+    <property name="key" value="${queue.security.aeskey}" />
+  </bean>
+
+	<!-- Spring DMLC -->
+  <bean id="serviceConsumerContainerForBroker01" class="org.springframework.jms.listener.DefaultMessageListenerContainer">
+    <property name="connectionFactory" ref="jmsConnectionFactoryForBroker01" />
+    <property name="destination" ref="serviceQueue" />
+    <property name="concurrency" value="10-1000" />
+    <property name="messageListener">
+      <bean class="com.yz.framework.service.consumer.activemq.ServiceConsumerListener">
+        <property name="executeTask" ref="executeProduceTask"/>
+      </bean>
+    </property>
+  </bean>
+	
+	<!-- 库存变化记录同步gc  -->
+  <bean id="delayedListenerContainerForBroker01" class="org.springframework.jms.listener.DefaultMessageListenerContainer">
+    <property name="connectionFactory" ref="jmsConnectionFactoryForBroker01" />
+    <property name="destination" ref="delayedControlQueue" />
+    <property name="concurrency" value="10-1000" />
+    <property name="messageListener">
+      <bean class="com.yz.framework.service.consumer.activemq.DelayedControlConsumerListener">
+		<property name="executeTask" ref="executeProduceTask"/>
+        <property name="redisTemplate" ref="redisTemplate"></property>
+      </bean>
+    </property>
+  </bean>
+  
+  <bean id="wmsListenerContainerForBroker01" class="org.springframework.jms.listener.DefaultMessageListenerContainer">
+    <property name="connectionFactory" ref="jmsConnectionFactoryForBroker01" />
+    <property name="destination" ref="serviceWmsQueue" />
+    <property name="concurrency" value="10-1000" />
+    <property name="messageListener">
+      <bean class="com.yz.framework.service.consumer.activemq.ServiceWmsConsumerListener">
+		<property name="executeTask" ref="executeProduceTask"/>
+      </bean>
+    </property>
+  </bean>
+  
+</beans>

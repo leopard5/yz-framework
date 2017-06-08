@@ -1,0 +1,4 @@
+#set($layout = "simple-layout.wml")
+<div data-options="region:'north',border:false" style="height: 60px; background: #B3DFDA; padding: 10px">north region</div>
+<div data-options="region:'west',split:true,title:'West'" style="width: 150px; padding: 10px;">west content</div>
+<div data-options="region:'center',title:'Center'">$screen_content</div>

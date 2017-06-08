@@ -1,0 +1,24 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>com.yz</groupId>
+    <artifactId>yz-framework</artifactId>
+    <version>1.0.5-SNAPSHOT</version>
+  </parent>
+  <artifactId>yz-framework-all</artifactId>
+  <packaging>pom</packaging>
+  <modules>
+    <module>../yz-framework-parent</module>
+    <module>../yz-framework-core</module>
+    <module>../yz-framework-logging</module>
+    <module>../yz-framework-config</module>
+    <module>../yz-framework-security</module>
+    <module>../yz-framework-data</module>
+    <module>../yz-framework-queue</module>
+    <module>../yz-framework-registry</module>
+    <module>../yz-framework-zookeeper</module>
+    <module>../yz-framework-search</module>
+    <module>../yz-framework-cache</module>
+    <module>../yz-framework-dubbo</module>
+  </modules>
+</project>

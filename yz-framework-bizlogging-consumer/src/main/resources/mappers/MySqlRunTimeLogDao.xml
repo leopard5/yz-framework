@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="MySqlRunTimeLogDao">
+	<update id="createTable" parameterType="java.util.HashMap">
+		CREATE TABLE `${tableName}` (
+		`id` bigint(20) NOT NULL AUTO_INCREMENT,
+		`application` varchar(50) DEFAULT NULL,
+		`sql_id` varchar(200) DEFAULT NULL,
+		`sql` varchar(8000) DEFAULT NULL,
+		`start_time` bigint(20) DEFAULT NULL,
+		`end_time` bigint(20) DEFAULT NULL,
+		`used_time` int(11) DEFAULT NULL,
+		PRIMARY KEY
+		(`id`)
+		) ENGINE=MyISAM
+		AUTO_INCREMENT=1
+		DEFAULT CHARSET=utf8;
+	</update>
+
+	<select id="selectByTableName" resultType="java.lang.String" parameterType="java.lang.String">
+		SELECT TABLE_NAME from
+		information_schema.`TABLES` where
+		TABLE_NAME= #{tableName}
+	</select>
+
+	<insert id="writeLog" parameterType="java.util.Map">
+		INSERT INTO `${tableName}` (
+			sql_id,
+			`sql`,
+			start_time,
+			end_time,
+			used_time,
+			application
+		) VALUE (
+			#{sqlId,jdbcType=VARCHAR},
+			#{sql,jdbcType=VARCHAR},
+			#{start,jdbcType=BIGINT},
+			#{end,jdbcType=BIGINT},
+			#{used,jdbcType=INTEGER},
+			#{application,jdbcType=VARCHAR}
+		)
+	</insert>
+
+</mapper>

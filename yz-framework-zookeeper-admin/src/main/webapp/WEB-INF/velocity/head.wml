@@ -1,0 +1,7 @@
+#set($webRoot=${config.getProperty("zk-admin.webroot")})
+<meta http-equiv="content-type" content="text/html;charset=utf-8">
+<title>Full Layout - jQuery EasyUI Demo</title>
+<link rel="stylesheet" type="text/css" href="${webRoot}/js/themes/default/easyui.css">
+<link rel="stylesheet" type="text/css" href="${webRoot}/js/themes/icon.css">
+<script type="text/javascript" src="${webRoot}/js/jquery.min.js"></script>
+<script type="text/javascript" src="${webRoot}/js/jquery.easyui.min.js"></script>

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="jmsConnectionFactory" 
+        class="com.yz.framework.queue.activemq.SecureActiveMQConnectionFactory">
+        <property name="brokerURL" value="${queue.service.brokers.brokerURL}" />
+        <property name="userName" value="${queue.service.brokers.userName}" />
+        <property name="password" value="${queue.service.brokers.password}" />
+        <property name="key" value="${queue.security.aeskey}" />
+    </bean>
+
+    <bean id="pooledJmsConnectionFactory" class="org.apache.activemq.pool.PooledConnectionFactory" destroy-method="stop">
+        <property name="connectionFactory" ref="jmsConnectionFactory" />
+    </bean>
+
+    <!-- Spring JMS Template -->
+    <bean id="jmsTemplate" class="org.springframework.jms.core.JmsTemplate">
+        <property name="connectionFactory" ref="pooledJmsConnectionFactory" />
+    </bean>
+
+    <bean id="serviceProducer" class="com.yz.framework.queue.activemq.ActiveMQProducer" init-method="start">
+        <property name="name" value="service-consumer" />
+        <property name="jmsTemplate" ref="jmsTemplate" />
+        <property name="destination" value="serviceQueue" />
+    </bean>
+    
+	<bean id="bizLogger" class="com.yz.framework.bizlogging.BizLogger">
+		<property name="application" value="service-consumer" />
+		<property name="apiInvokeLogProducer">
+			<bean id="apiInvokeLogProducer" class="com.yz.framework.queue.activemq.ActiveMQProducer">
+				<property name="name" value="service-consumer" />
+				<property name="jmsTemplate" ref="jmsTemplate" />
+				<property name="destination" value="apiInvokeLogQueue" />
+			</bean>
+		</property>
+	</bean>
+
+	<bean id="executeProduceTask" class="com.yz.framework.service.consumer.common.ExecuteTask">
+	    <property name="serviceProducer" ref="serviceProducer" />
+		<property name="defaultFailedQueue" value="failedServiceJobQueue" />
+	</bean>
+	
+	<bean id="serviceQueue" class="org.apache.activemq.command.ActiveMQQueue">
+		<constructor-arg name="name" value="serviceQueue" />
+	</bean>
+    
+	<bean id="delayedControlQueue" class="org.apache.activemq.command.ActiveMQQueue">
+		<constructor-arg name="name" value="delayedControlQueue" />
+	</bean>
+	
+	<bean id="serviceWmsQueue" class="org.apache.activemq.command.ActiveMQQueue">
+		<constructor-arg name="name" value="serviceWmsQueue" />
+	</bean>
+
+
+</beans>

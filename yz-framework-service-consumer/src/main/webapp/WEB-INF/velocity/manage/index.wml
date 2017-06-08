@@ -1,0 +1,65 @@
+#set($layout = "simple-layout.wml")
+
+<TABLE style="width: 90%">
+	<tr>
+
+		<td colspan="2"><INPUT type="button" id="btnRefresh" value="刷新" onclick="getJob();" /> <INPUT type="button" id="btnKickBack"
+			value="踢回队列" onclick="kick();" /> <INPUT type="button" id="btnDelete" value="删除" onclick="deleteJob();" /></td>
+	</tr>
+	<tr>
+		<td colspan="2">任务号:<INPUT id="tbJobId" name="jobId" readonly="readonly" />
+		</td>
+	</tr>
+	<TR colspan="2">
+		<td colspan="5"><TEXTAREA id="dataBefore" rows="100" style="width: 50%" name="dataBefore"></TEXTAREA>
+	</TR>
+
+</TABLE>
+<script type="text/javascript">
+	$(function() {
+		getJob();
+	})
+	function deleteJob() {
+		var jobId = $("#tbJobId").val();
+		if (jobId == "") {
+			$.messager.alert('Warning', '当前没有job可以删除');
+			return;
+		}
+		$.messager.confirm('Confirm', '你确认删除Job吗?', function(r) {
+			if (r) {
+				var getUrl = "/service-consumer/manage/delete.html";
+				$.get(getUrl, {
+					"jobId" : jobId
+				}, function(data) {
+					if (data == "1") {
+						$.messager.alert('Warning', '删除成功');
+					} else {
+						$.messager.alert('Warning', '删除失败');
+					}
+					getJob();
+				}, "text");
+			}
+		});
+
+	}
+
+	function getJob() {
+		var getUrl = "/service-consumer/manage/getBuryJob.html";
+		$.get(getUrl, "", function(data) {
+			$("#dataBefore").val(data);
+			var json = eval("josn=" + data);
+			$("#tbJobId").val(json.jobId);
+		}, "text");
+	}
+	function kick() {
+		var getUrl = "/service-consumer/manage/kick.html";
+		$.get(getUrl, "", function(data) {
+			if (data == "0") {
+				$.messager.alert('Warning', 'kick失败');
+			} else {
+				$.messager.alert('Warning', 'kick成功');
+			}
+			getJob();
+		}, "text");
+	}
+</script>

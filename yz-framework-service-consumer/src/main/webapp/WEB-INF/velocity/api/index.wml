@@ -1,0 +1,104 @@
+#set($layout = "layout.wml")
+
+<div id="divSearch">
+	<TABLE>
+		<TR>
+			<td>任务号</td>
+			<td><INPUT name="jobId" /></td>
+
+			<td>接口</td>
+			<td><INPUT name="api" /></td>
+
+			<td>操作人</td>
+			<td><INPUT name="operator" /></td>
+
+			<td>操作时间</td>
+			<td><INPUT name="operateTime" /></td>
+			<td><a id="btnSearch" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search'">搜索</a></td>
+		</TR>
+	</TABLE>
+</div>
+
+
+<table id="dgBizLog" class="easyui-datagrid">
+	<thead>
+		<tr>
+			<th data-options="field:'jobId'">任务号</th>
+			<th data-options="field:'api'">API</th>
+			<th data-options="field:'from'">调用端</th>
+			<th data-options="field:'invokeTime'">调用时间</th>
+			<th data-options="field:'message'">消息</th>
+		</tr>
+	</thead>
+</table>
+
+<div id="dd" style="height: 500px; width: 800px; display: none;">
+	<TABLE style="width: 90%">
+		<TR>
+			<td>任务号</td>
+			<td colspan="3"><INPUT id="tbJobId" name="jobId" /></td>
+		</TR>
+		<TR>
+			<td>接口</td>
+			<td colspan="3"><INPUT id="txtApi" name="api" style="width: 500px;" /></td>
+		</TR>
+		<TR>
+			<td>调用端</td>
+			<td><INPUT id="txtFrom" name="from" /></td>
+			<td>调用时间</td>
+			<td><INPUT id="txtInvokeTime" name="invokeTime" /></td>
+		</TR>
+		<TR>
+			<td>请求数据</td>
+			<td colspan="3"><TEXTAREA rows="10" style="width: 100%" name="message"></TEXTAREA>
+		</TR>
+
+	</TABLE>
+</div>
+
+<script type="text/javascript">
+	$(function() {
+		$('#dgBizLog').datagrid({
+			url : '${webRoot}/api/query.html',
+			queryParams : getQueryParams(),
+			loadMsg : "loading data...",
+			pagination : true,
+			rownumbers : true,
+			pageNumber : 0,
+			pageSize : 10,
+			pageList : [ 10, 20, 30, 40, 50 ],
+			singleSelect : true,
+			onDblClickRow : function(rowIndex, rowData) {
+				var getUrl = "${webRoot}/api/get.html?jobId=" + rowData.jobId;
+				var bizLog = $.get(getUrl);
+
+				$('#dd').show();
+				$('#dd').dialog({
+					title : '详细信息',
+					closed : false,
+					cache : false,
+					modal : true
+				});
+
+				$('#dd').form("load", getUrl);
+			},
+
+		});
+
+		$("#btnSearch").click(function() {
+			$('#dgBizLog').datagrid("load", getQueryParams());
+		});
+
+	});
+	function getQueryParams() {
+		var params = {};
+		var inputs = $("#divSearch").find("input");
+		inputs.each(function(index) {
+			var input = $(this);
+			var name = input.attr("name");
+			var value = input.val();
+			params[name] = value;
+		});
+		return params;
+	}
+</script>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+  <bean id="jmsConnectionFactory" class="org.apache.activemq.ActiveMQConnectionFactory">
+    <property name="brokerURL" value="${queue.logging.broker01.brokerURL}" />
+  </bean>
+
+	<!-- Spring DMLC -->
+  <bean id="apiInvokeLogListenerContainer" class="org.springframework.jms.listener.DefaultMessageListenerContainer">
+    <property name="connectionFactory" ref="jmsConnectionFactory" />
+    <property name="concurrency" value="10-1000" />
+    <property name="destination">
+      <bean class="org.apache.activemq.command.ActiveMQQueue">
+        <constructor-arg value="apiInvokeLogQueue" />
+      </bean>
+    </property>
+    <property name="messageListener">
+      <bean class="com.yz.framework.bizlogging.consumer.ApiInvokeLogListener" />
+    </property>
+  </bean>
+
+	<!-- Spring DMLC -->
+  <bean id="sqlRunTimeLogListenerContainer" class="org.springframework.jms.listener.DefaultMessageListenerContainer">
+    <property name="connectionFactory" ref="jmsConnectionFactory" />
+    <property name="concurrency" value="10-1000" />
+    <property name="beanName" value="sqlRunTime" />
+    <property name="destination">
+      <bean id="sqlRunTimeQueue" class="org.apache.activemq.command.ActiveMQQueue">
+        <constructor-arg value="sqlRunTimeQueue" />
+      </bean>
+    </property>
+    <property name="messageListener">
+      <bean id="sqlRunTimeLogListener" class="com.yz.framework.bizlogging.consumer.SqlRunTimeLogListener" />
+    </property>
+
+  </bean>
+
+</beans>
