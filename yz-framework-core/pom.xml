@@ -3,7 +3,7 @@
 	<parent>
 		<groupId>com.yz</groupId>
 		<artifactId>yz-framework</artifactId>
-		<version>1.0.5-SNAPSHOT</version>
+		<version>1.0.0-SNAPSHOT</version>
 	</parent>
 	<artifactId>yz-framework-core</artifactId>
 	<dependencies>
