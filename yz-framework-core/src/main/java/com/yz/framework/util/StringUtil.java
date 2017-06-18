@@ -1,8 +1,5 @@
 package com.yz.framework.util;
 
-/**
- * Author: Henry Lin
- */
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
@@ -24,10 +21,9 @@ import java.util.regex.Pattern;
  * 
  */
 /**
- * TODO
- * 
+ *
  * @author yazhong.qi
- * @date 2015年7月27日 上午9:59:12
+ * @date 2017年6月18日 上午9:59:12
  * @version 1.0
  */
 public class StringUtil {
@@ -324,7 +320,8 @@ public class StringUtil {
 	/**
 	 * 从字符串中取出一定长度的内容
 	 * 
-	 * @param e
+	 * @param str
+	 * @param len
 	 * @return
 	 */
 	public static String prefixLenStr(String str, int len) {
@@ -341,9 +338,9 @@ public class StringUtil {
 
 	/**
 	 * Description : 过滤空字符串 <br>
-	 * Created on 2007-3-8 16:03:13 <br>
+	 * Created on 2017-6-18 16:03:13 <br>
 	 * 
-	 * @param argStr
+	 * @param inputStr
 	 * @return
 	 */
 	public static String null2Blank(String inputStr) {
