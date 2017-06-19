@@ -1,13 +1,3 @@
-/**
- * yz-framework-zookeeper 
- * LocalCacheFactory.java 
- * com.yz.framework.zookeeper 
- * TODO  
- * @author yazhong.qi
- * @date   2016年3月1日 上午11:55:38 
- * @version   1.0
- */
-
 package com.yz.framework.cache;
 
 import java.io.IOException;
@@ -52,10 +42,9 @@ import com.yz.framework.zookeeper.ZK;
  * @see
  */
 /**
- * TODO
- * 
+ *
  * @author yazhong.qi
- * @date 2016年3月1日 下午6:15:26
+ * @date 2017年6月18日 下午6:15:26
  * @version 1.0
  */
 public class RedisCacheFactory extends AbstractCacheFactory {
