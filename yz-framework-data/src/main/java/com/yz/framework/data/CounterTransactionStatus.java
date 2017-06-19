@@ -1,13 +1,3 @@
-/**
- * yz-framework-data 
- * CounterTransactionStatus.java 
- * com.yz.framework.data 
- * TODO  
- * @author yazhong.qi
- * @date   2015年12月7日 上午11:42:38 
- * @version   1.0
- */
-
 package com.yz.framework.data;
 
 import org.springframework.transaction.TransactionStatus;

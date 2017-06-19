@@ -1,23 +1,11 @@
-/**
- * yz-framework-data 
- * ConnectionCleanInterceptor.java 
- * com.yz.framework.data 
- * TODO  
- * @author yazhong.qi
- * @date   2016年2月3日 下午1:31:29 
- * @version   1.0
- */
-
 package com.yz.framework.data;
 
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
+import com.yz.framework.logging.Logger;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.yz.framework.logging.Logger;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * ClassName:ConnectionCleanInterceptor <br/>

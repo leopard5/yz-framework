@@ -1,13 +1,3 @@
-/**
- * yz-framework-core 
- * NameValue.java 
- * com.yz.framework 
- * TODO  
- * @author yazhong.qi
- * @date   2016年3月18日 上午11:01:18 
- * @version   1.0
- */
-
 package com.yz.framework;
 
 /**

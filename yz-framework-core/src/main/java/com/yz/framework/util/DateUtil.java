@@ -149,7 +149,6 @@ public class DateUtil {
      * 
      * @param patten
      *            格式化字符串
-     * @param 日期
      * @return
      */
     public static String getPreWorkDay(String patten) {
