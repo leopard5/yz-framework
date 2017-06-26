@@ -26,7 +26,7 @@ import com.yz.framework.util.StringUtil;
 
 /**
  * ClassName:RedisTemplateEx <br/>
- * Function: TODO ADD FUNCTION. <br/>
+ * Function: StringRedisTemplate扩展. <br/>
  * Reason: TODO ADD REASON. <br/>
  * Date: 2016年3月18日 下午3:15:11 <br/>
  * 
@@ -52,14 +52,16 @@ public class StringRedisTemplateEX extends StringRedisTemplate {
 
 	private static final RedisScript<String> MULTI_SET_IF_ABSENT_SCRIPT;
 	private static final RedisScript<String> MULTI_DEL_IF_EQUAL_SCRIPT;
+	private static final RedisScript<String> STOCK_DECREASE_SCRIPT;
 
 	static {
 		String multi_set_if_absent = null;
 		String multi_del_if_equal = null;
+		String stock_decrease = null;
 		try {
-			multi_set_if_absent = FileUtil.getResourceContent("multi_set_if_absent.lua");
-			multi_del_if_equal = FileUtil.getResourceContent("multi_del_if_equal.lua");
-
+			multi_set_if_absent = FileUtil.getResourceContent("lua/multi_set_if_absent.lua");
+			multi_del_if_equal = FileUtil.getResourceContent("lua/multi_del_if_equal.lua");
+			stock_decrease = FileUtil.getResourceContent("lua/stock_decrease.lua");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -67,6 +69,7 @@ public class StringRedisTemplateEX extends StringRedisTemplate {
 		}
 		MULTI_SET_IF_ABSENT_SCRIPT = new DefaultRedisScript<String>(multi_set_if_absent, String.class);
 		MULTI_DEL_IF_EQUAL_SCRIPT = new DefaultRedisScript<String>(multi_del_if_equal, String.class);
+		STOCK_DECREASE_SCRIPT = new DefaultRedisScript<String>(stock_decrease, String.class);
 	}
 
 	private static final String SUCCESS_FLAG = "OK";
@@ -152,5 +155,28 @@ public class StringRedisTemplateEX extends StringRedisTemplate {
 			}
 		}
 		return list;
+	}
+	
+	/**
+	 * 扣减库存的lua脚本 保证事务一致性和原子性
+	 * @param keys
+	 * @param increment
+	 * @return 
+	 * NOKEY => redis中没有库存标识的key
+	 * NO    => 库存不足
+	 * OK    => 成功扣减库存
+	 * null  => keys参数不正确 此方法的keys只需要传一个参数[库存的缓存key]
+	 */
+	public String atomicDecrease(final List<String> keys, final String increment){
+		String result = null;
+		if (keys.size() == 1) {
+			result = this.execute(
+					STOCK_DECREASE_SCRIPT,
+					keys,
+					increment);
+		}else {
+			return null;
+		}
+		return result;
 	}
 }
