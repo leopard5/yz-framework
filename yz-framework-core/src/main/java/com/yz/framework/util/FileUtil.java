@@ -123,8 +123,10 @@ public abstract class FileUtil {
 
     public static String readUseBio(String fileName) throws IOException {
         BufferedReader reader = null;
+        FileReader fr = null;
         try {
-            reader = new BufferedReader(new FileReader(fileName));
+            fr = new FileReader(fileName);
+            reader = new BufferedReader(fr);
             String tempString = null;
             StringBuilder sb = new StringBuilder();
             while ((tempString = reader.readLine()) != null) {
@@ -133,9 +135,11 @@ public abstract class FileUtil {
             return sb.toString();
 
         } finally {
+            if (fr != null) {
+                fr.close();
+            }
             if (reader != null) {
                 reader.close();
-                reader = null;
             }
         }
     }
@@ -293,28 +297,45 @@ public abstract class FileUtil {
     }
 
     /**
+     * 
      * 向文件添加内容
      *
      * @param fileName
      * @param data
-     * @throws IOException void
+     * @throws IOException
+     *             void
      * @throws
      */
     public static void appendToFile(String fileName, String data)
             throws IOException {
-        FileOutputStream file = new FileOutputStream(fileName, true);
-        DataOutputStream out = new DataOutputStream(file);
+        FileOutputStream file = null;
+        DataOutputStream out = null;
+        try {
+            file = new FileOutputStream(fileName, true);
+            out = new DataOutputStream(file);
+
         out.writeBytes(data);
         out.flush();
+        }catch (IOException e){
+            e.printStackTrace();
+        }finally {
+            if (file != null) {
+                file.close();
+            }
+            if (out != null) {
         out.close();
+    }
+        }
     }
 
     /**
+     * 
      * 二进制拷贝
      *
      * @param input
      * @param output
-     * @throws IOException void
+     * @throws IOException
+     *             void
      */
     public static void binaryCopy(InputStream input, OutputStream output)
             throws IOException {
@@ -386,14 +407,19 @@ public abstract class FileUtil {
         return sb.toString();
     }
 
+    
     /**
      * 写文件
      *
-     * @param fileName      完整文件名(类似：/usr/a/b/c/d.txt)
-     * @param contentBytes  文件内容的字节数组
-     * @param autoCreateDir 目录不存在时，是否自动创建(多级)目录
-     * @param autoOverwrite 目标文件存在时，是否自动覆盖
-     * @return boolean
+	 * @param fileName
+	 *            完整文件名(类似：/usr/a/b/c/d.txt)
+	 * @param contentBytes
+	 *            文件内容的字节数组
+	 * @param autoCreateDir
+	 *            目录不存在时，是否自动创建(多级)目录
+	 * @param autoOverWrite
+	 *            目标文件存在时，是否自动覆盖
+	 * @return
      * @throws IOException
      */
     public static boolean write(String fileName, byte[] contentBytes, boolean autoCreateDir, boolean autoOverwrite)
@@ -406,19 +432,27 @@ public abstract class FileUtil {
             delete(fileName);
         }
         File f = new File(fileName);
-
-        FileOutputStream fs = new FileOutputStream(f);
+		FileOutputStream fs = null;
+		try {
+            fs = new FileOutputStream(f);
         fs.write(contentBytes);
         fs.flush();
+            result = true;
+        }catch (IOException e){
+		    e.printStackTrace();
+        }finally {
+            if (fs != null) {
         fs.close();
-        result = true;
+            }
+        }
         return result;
     }
 
     /**
      * 创建(多级)目录
      *
-     * @param filePath 完整的文件名(类似：/usr/a/b/c/d.xml)
+	 * @param filePath
+	 *            完整的文件名(类似：/usr/a/b/c/d.xml)
      */
     public static void createDirs(String filePath) {
         File file = new File(filePath);
@@ -428,4 +462,6 @@ public abstract class FileUtil {
         }
 
     }
+	
+	
 }

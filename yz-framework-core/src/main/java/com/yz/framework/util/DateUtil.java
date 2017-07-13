@@ -31,7 +31,7 @@ import java.util.TimeZone;
  */
 public class DateUtil {
 
-    public static final long MILLI_SECONDS_IN_ONE_DAY = 24 * 3600 * 1000;
+	public static final long MILLI_SECONDS_IN_ONE_DAY = (long)(24 * 3600 * 1000);
 
     //2001-07-04T12:08:56.235-07或2001-07-04T12:08:56.235Z
     public static final String PATTERN_ISO8601_ONELETTER = "yyyy-MM-dd'T'HH:mm:ss.SSSX";
@@ -300,23 +300,23 @@ public class DateUtil {
      * @param date
      * @return
      */
-    public static XMLGregorianCalendar toXMLGregorianCalendar(Date date) {
-        if (date == null) return null;
-
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(date);
-        XMLGregorianCalendar ret = dtf.newXMLGregorianCalendar(
-                calendar.get(Calendar.YEAR),
-                calendar.get(Calendar.MONTH) + 1,
-                calendar.get(Calendar.DAY_OF_MONTH),
-                calendar.get(Calendar.HOUR_OF_DAY),
-                calendar.get(Calendar.MINUTE),
-                calendar.get(Calendar.SECOND),
-                calendar.get(Calendar.MILLISECOND),
-                calendar.get(Calendar.ZONE_OFFSET) / (1000 * 60));
-
-        return ret;
-    }
+//	public static XMLGregorianCalendar toXMLGregorianCalendar(Date date){
+//		if(date == null) return null;
+//
+//        Calendar calendar = Calendar.getInstance();
+//        calendar.setTime(date);
+//	    XMLGregorianCalendar ret =  dtf.newXMLGregorianCalendar(
+//	    	calendar.get(Calendar.YEAR),
+//	        calendar.get(Calendar.MONTH) + 1,
+//	        calendar.get(Calendar.DAY_OF_MONTH),
+//	        calendar.get(Calendar.HOUR_OF_DAY),
+//	        calendar.get(Calendar.MINUTE),
+//	        calendar.get(Calendar.SECOND),
+//	        calendar.get(Calendar.MILLISECOND),
+//	        calendar.get(Calendar.ZONE_OFFSET)/(1000*60));
+//
+//	    return ret;
+//	}
 
     /**
      * @param calendar
@@ -362,9 +362,16 @@ public class DateUtil {
      * @return 相差天数
      * @throws ParseException
      */
-    public static long daysBetween(Date smdate, Date bdate) {
-        long time1 = minInDay(smdate).getTime();
-        long time2 = minInDay(bdate).getTime();
+    public static long daysBetween(Date smdate,Date bdate)
+    {
+    	Date dTime1 = minInDay(smdate);
+    	Date dTime2 = minInDay(bdate);
+    	if (dTime1 == null || dTime2 == null){
+    		return 0;
+		}
+        long time1 = dTime1.getTime();
+        long time2 = dTime2.getTime();
+
         long between_days = (time2 - time1) / (1000 * 3600 * 24);
 
         return between_days;

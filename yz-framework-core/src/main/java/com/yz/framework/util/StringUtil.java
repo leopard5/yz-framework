@@ -50,6 +50,13 @@ public class StringUtil {
      */
     public static int MONEY_TYPE_FEN = 2;
 
+    private StringUtil() {
+        throw new IllegalStateException("Utility class");
+    }
+
+    public static String trim(String str) {
+        return trim(str, " ");
+    }
 
     public static String randomString(int length) {
         if (length < 1) return UUID.randomUUID().toString();
@@ -119,6 +126,7 @@ public class StringUtil {
             return email;
         }
     }
+
 
     /***************************************************************************
      * 检查是否包含某个字符串
@@ -356,14 +364,19 @@ public class StringUtil {
      */
     public static String parseTempFile(Map var, String tempFile, String encoding)
             throws Exception {
-        BufferedReader br = new BufferedReader(new InputStreamReader(
-                new FileInputStream(tempFile), encoding), 2048);
+        BufferedReader br = null;
+        InputStreamReader ir = null;
+        FileInputStream fs = null;
+        String str = null;
+        try {
+            fs = new FileInputStream(tempFile);
+            ir = new InputStreamReader(fs, encoding);
+            br = new BufferedReader(ir, 2048);
         StringBuffer sb = new StringBuffer();
         String s = null;
         while ((s = br.readLine()) != null)
             sb.append(s).append(LINE);
-        br.close();
-        String str = sb.toString();
+            str = sb.toString();
         for (Iterator it = var.keySet().iterator(); it.hasNext(); ) {
             String key = it.next().toString();
             str = str.replaceAll("\\$\\{" + key + "\\}", var.get(key)
@@ -371,6 +384,19 @@ public class StringUtil {
         }
         // 替换所有未定义的${}
         str = str.replaceAll("\\$\\{.*\\}", "");
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (fs != null) {
+                fs.close();
+            }
+            if (ir != null) {
+                ir.close();
+            }
+            if (br != null) {
+                br.close();
+            }
+        }
         return str;
     }
 
@@ -431,7 +457,7 @@ public class StringUtil {
      * @return
      */
     public static String getIdsForSql(List idList) {
-        StringBuffer strBuf = new StringBuffer();
+        StringBuilder strBuf = new StringBuilder();
         if (idList != null && idList.size() > 0) {
             for (int i = 0; i < idList.size(); i++) {
                 strBuf.append((0 == i) ? "" : ",");
@@ -503,12 +529,6 @@ public class StringUtil {
             }
         }
         return false;
-    }
-
-    public static void main(String[] as) throws Exception {
-        // System.out.println(getPreviousDate(getDate("yyyy-MM-dd"),"yyyy-MM-dd"));
-        // System.out.println(getNextDate(getDate("yyyy-mm-dd")));
-
     }
 
     public static String dealTagOptionCode(String optionCode) throws Exception {
@@ -610,14 +630,14 @@ public class StringUtil {
         return sb.toString() + str.trim();
     }
 
-    private static final String base = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    private static final String BASE = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 
     public static String getRandomString(int length) { // length表示生成字符串的长度
         Random random = new Random();
         StringBuffer sb = new StringBuffer();
         for (int i = 0; i < length; i++) {
-            int number = random.nextInt(base.length());
-            sb.append(base.charAt(number));
+            int number = random.nextInt(BASE.length());
+            sb.append(BASE.charAt(number));
         }
         return sb.toString();
     }
