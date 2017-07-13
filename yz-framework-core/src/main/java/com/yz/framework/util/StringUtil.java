@@ -54,10 +54,6 @@ public class StringUtil {
         throw new IllegalStateException("Utility class");
     }
 
-    public static String trim(String str) {
-        return trim(str, " ");
-    }
-
     public static String randomString(int length) {
         if (length < 1) return UUID.randomUUID().toString();
         String ss = UUID.randomUUID().toString();
