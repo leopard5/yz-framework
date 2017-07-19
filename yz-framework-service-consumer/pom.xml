@@ -12,12 +12,12 @@
         <dependency>
             <groupId>com.yz</groupId>
             <artifactId>yz-framework-config</artifactId>
-            <version>${com.yz.frameowrk.version}</version>
+            <version>${yz-framework-config.version}</version>
         </dependency>
         <dependency>
             <groupId>com.yz</groupId>
             <artifactId>yz-framework-queue</artifactId>
-            <version>${com.yz.frameowrk.version}</version>
+            <version>${yz-framework-queue.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.data</groupId>
