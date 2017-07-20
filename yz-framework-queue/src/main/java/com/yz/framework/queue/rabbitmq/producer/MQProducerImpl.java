@@ -1,7 +1,7 @@
-package com.yz.framework.mq.producer;
+package com.yz.framework.queue.rabbitmq.producer;
 
 import com.alibaba.fastjson.JSONObject;
-import com.yz.framework.mq.event.EventMessage;
+import com.yz.framework.queue.rabbitmq.event.EventMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;

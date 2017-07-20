@@ -1,4 +1,4 @@
-package com.yz.framework.mq.event;
+package com.yz.framework.queue.rabbitmq.event;
 
 import java.io.Serializable;
 

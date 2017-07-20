@@ -1,4 +1,4 @@
-package com.yz.framework.mq.producer;
+package com.yz.framework.queue.rabbitmq.producer;
 
 import org.springframework.amqp.rabbit.core.RabbitTemplate.ConfirmCallback;
 

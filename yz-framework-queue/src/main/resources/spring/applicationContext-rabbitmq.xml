@@ -1,14 +1,22 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:rabbit="http://www.springframework.org/schema/rabbit"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
-
-    http://www.springframework.org/schema/rabbit http://www.springframework.org/schema/rabbit/spring-rabbit-1.7.xsd">
+       xmlns:task="http://www.springframework.org/schema/task"
+       xsi:schemaLocation="
+       http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
+       http://www.springframework.org/schema/rabbit
+       http://www.springframework.org/schema/rabbit/spring-rabbit-1.6.xsd
+       http://www.springframework.org/schema/task
+       http://www.springframework.org/schema/task/spring-task-4.2.xsd
+">
 
 
     <bean id="jsonMessageConverter"
           class="org.springframework.amqp.support.converter.Jackson2JsonMessageConverter">
     </bean>
+
+    <task:executor id="taskExecutor" pool-size="4-256" queue-capacity="128"/>
 
     <!-- virtual host /-->
     <rabbit:connection-factory id="connectionFactory" addresses="${rabbitmq.addresses}"
@@ -34,10 +42,13 @@
 
     <bean id="rabbitListenerContainerFactory"
           class="org.springframework.amqp.rabbit.config.SimpleRabbitListenerContainerFactory">
-        <property name="messageConverter" ref="jsonMessageConverter"/>
         <property name="connectionFactory" ref="connectionFactory"/>
+        <property name="messageConverter" ref="jsonMessageConverter"/>
         <property name="concurrentConsumers" value="1"/>
         <property name="maxConcurrentConsumers" value="10"/>
+        <property name="transactionManager" value="transactionManager"/>
+        <property name="taskExecutor" ref="taskExecutor"/>
+        <property name="channelTransacted" value="true"/>
     </bean>
 
 </beans>

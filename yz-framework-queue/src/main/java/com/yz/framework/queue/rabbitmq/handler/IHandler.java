@@ -1,4 +1,4 @@
-package com.yz.framework.mq.handler;
+package com.yz.framework.queue.rabbitmq.handler;
 
 public interface IHandler<T> {
 	

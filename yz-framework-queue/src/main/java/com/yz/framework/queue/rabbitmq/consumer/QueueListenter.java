@@ -1,9 +1,9 @@
-package com.yz.framework.mq.consumer;
+package com.yz.framework.queue.rabbitmq.consumer;
 
 import com.alibaba.fastjson.JSONObject;
 import com.rabbitmq.client.Channel;
-import com.yz.framework.mq.event.EventMessage;
-import com.yz.framework.mq.handler.HandlerFactory;
+import com.yz.framework.queue.rabbitmq.event.EventMessage;
+import com.yz.framework.queue.rabbitmq.handler.HandlerFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.core.Message;

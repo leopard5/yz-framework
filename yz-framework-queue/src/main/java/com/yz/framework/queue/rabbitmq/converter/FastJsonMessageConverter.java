@@ -1,7 +1,6 @@
-package com.yz.framework.mq.converter;
+package com.yz.framework.queue.rabbitmq.converter;
 
-import java.nio.charset.Charset;
-
+import com.alibaba.fastjson.JSON;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.core.Message;
@@ -9,7 +8,7 @@ import org.springframework.amqp.core.MessageProperties;
 import org.springframework.amqp.support.converter.AbstractMessageConverter;
 import org.springframework.amqp.support.converter.MessageConversionException;
 
-import com.alibaba.fastjson.JSON;
+import java.nio.charset.Charset;
 
 public class FastJsonMessageConverter extends AbstractMessageConverter {
 	private static Logger logger = LoggerFactory.getLogger(FastJsonMessageConverter.class);
