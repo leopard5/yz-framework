@@ -422,15 +422,8 @@
             <dependency>
                 <groupId>org.springframework.amqp</groupId>
                 <artifactId>spring-rabbit</artifactId>
-                <version>1.7.3.RELEASE</version>
+                <version>1.6.10.RELEASE</version>
             </dependency>
-            <!-- https://mvnrepository.com/artifact/org.springframework.amqp/spring-amqp -->
-            <dependency>
-                <groupId>org.springframework.amqp</groupId>
-                <artifactId>spring-amqp</artifactId>
-                <version>1.7.3.RELEASE</version>
-            </dependency>
-
 
         </dependencies>
     </dependencyManagement>
