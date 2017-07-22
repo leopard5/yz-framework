@@ -9,10 +9,10 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ServiceName {
 
-	String value() default "";
+    String value() default "";
 
-	String module() default "";
+    String module() default "";
 
-	String application() default "";
+    String application() default "";
 
 }
