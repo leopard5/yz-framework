@@ -1,5 +1,7 @@
 package com.yz.framework.util;
 
+import com.yz.framework.constant.Constants;
+
 import java.io.ByteArrayOutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.InetAddress;
