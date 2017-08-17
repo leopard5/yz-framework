@@ -136,5 +136,42 @@
             <version>1.25</version>
         </dependency>
 
+        <!-- openoffice pdf converter -->
+        <dependency>
+            <groupId>juh</groupId>
+            <artifactId>juh</artifactId>
+            <version>3.2.1</version>
+        </dependency>
+        <dependency>
+            <groupId>jur</groupId>
+            <artifactId>jur</artifactId>
+            <version>3.2.1</version>
+        </dependency>
+        <dependency>
+            <groupId>ridl</groupId>
+            <artifactId>ridl</artifactId>
+            <version>3.2.1</version>
+        </dependency>
+        <dependency>
+            <groupId>unoil</groupId>
+            <artifactId>unoil</artifactId>
+            <version>3.2.1</version>
+        </dependency>
+        <!-- openoffice pdf converter end -->
+
+        <!--http://maven.outofmemory.cn/com.itextpdf/itext-asian/5.2.0/ -->
+        <dependency>
+            <groupId>com.itextpdf</groupId>
+            <artifactId>itext-asian</artifactId>
+            <version>5.2.0</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/com.lowagie/itext -->
+        <dependency>
+            <groupId>com.lowagie</groupId>
+            <artifactId>itext</artifactId>
+            <version>4.2.2</version>
+        </dependency>
+
     </dependencies>
 </project>
