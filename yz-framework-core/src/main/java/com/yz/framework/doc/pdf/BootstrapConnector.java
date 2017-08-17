@@ -1,4 +1,4 @@
-package com.yz.framework.pdf;
+package com.yz.framework.doc.pdf;
 
 import com.sun.star.bridge.UnoUrlResolver;
 import com.sun.star.bridge.XUnoUrlResolver;
@@ -11,7 +11,7 @@ import com.sun.star.lang.IllegalArgumentException;
 import com.sun.star.lang.XMultiComponentFactory;
 import com.sun.star.uno.UnoRuntime;
 import com.sun.star.uno.XComponentContext;
-import com.yz.framework.pdf.server.OOoServer;
+import com.yz.framework.doc.pdf.server.OOoServer;
 
 /**
  * A bootstrap connector which establishes a connection to an OOo server.

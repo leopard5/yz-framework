@@ -1,4 +1,4 @@
-package com.yz.framework.pdf.server;
+package com.yz.framework.doc.pdf.server;
 
 import com.sun.star.comp.helper.BootstrapException;
 import com.sun.star.lib.util.NativeLibraryLoader;

@@ -3,7 +3,9 @@ package com.yz.framework.util;
 import org.springframework.core.io.ClassPathResource;
 
 import java.io.*;
+import java.net.URL;
 import java.nio.ByteBuffer;
+import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.file.Files;
 import java.nio.file.LinkOption;
@@ -297,13 +299,11 @@ public abstract class FileUtil {
     }
 
     /**
-     * 
      * 向文件添加内容
      *
      * @param fileName
      * @param data
-     * @throws IOException
-     *             void
+     * @throws IOException void
      * @throws
      */
     public static void appendToFile(String fileName, String data)
@@ -314,28 +314,26 @@ public abstract class FileUtil {
             file = new FileOutputStream(fileName, true);
             out = new DataOutputStream(file);
 
-        out.writeBytes(data);
-        out.flush();
-        }catch (IOException e){
+            out.writeBytes(data);
+            out.flush();
+        } catch (IOException e) {
             e.printStackTrace();
-        }finally {
+        } finally {
             if (file != null) {
                 file.close();
             }
             if (out != null) {
-        out.close();
-    }
+                out.close();
+            }
         }
     }
 
     /**
-     * 
      * 二进制拷贝
      *
      * @param input
      * @param output
-     * @throws IOException
-     *             void
+     * @throws IOException void
      */
     public static void binaryCopy(InputStream input, OutputStream output)
             throws IOException {
@@ -407,19 +405,15 @@ public abstract class FileUtil {
         return sb.toString();
     }
 
-    
+
     /**
      * 写文件
      *
-	 * @param fileName
-	 *            完整文件名(类似：/usr/a/b/c/d.txt)
-	 * @param contentBytes
-	 *            文件内容的字节数组
-	 * @param autoCreateDir
-	 *            目录不存在时，是否自动创建(多级)目录
-	 * @param autoOverWrite
-	 *            目标文件存在时，是否自动覆盖
-	 * @return
+     * @param fileName      完整文件名(类似：/usr/a/b/c/d.txt)
+     * @param contentBytes  文件内容的字节数组
+     * @param autoCreateDir 目录不存在时，是否自动创建(多级)目录
+     * @param autoOverwrite 目标文件存在时，是否自动覆盖
+     * @return
      * @throws IOException
      */
     public static boolean write(String fileName, byte[] contentBytes, boolean autoCreateDir, boolean autoOverwrite)
@@ -432,17 +426,17 @@ public abstract class FileUtil {
             delete(fileName);
         }
         File f = new File(fileName);
-		FileOutputStream fs = null;
-		try {
+        FileOutputStream fs = null;
+        try {
             fs = new FileOutputStream(f);
-        fs.write(contentBytes);
-        fs.flush();
+            fs.write(contentBytes);
+            fs.flush();
             result = true;
-        }catch (IOException e){
-		    e.printStackTrace();
-        }finally {
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
             if (fs != null) {
-        fs.close();
+                fs.close();
             }
         }
         return result;
@@ -451,8 +445,7 @@ public abstract class FileUtil {
     /**
      * 创建(多级)目录
      *
-	 * @param filePath
-	 *            完整的文件名(类似：/usr/a/b/c/d.xml)
+     * @param filePath 完整的文件名(类似：/usr/a/b/c/d.xml)
      */
     public static void createDirs(String filePath) {
         File file = new File(filePath);
@@ -462,6 +455,240 @@ public abstract class FileUtil {
         }
 
     }
-	
-	
+
+
+    /**
+     * 创建目录
+     *
+     * @param destDirName 目标目录名
+     * @return 目录创建成功返回true，否则返回false
+     */
+    public static boolean createDir(String destDirName) {
+        File dir = new File(destDirName);
+        if (dir.exists()) {
+            return false;
+        }
+        // 创建单个目录
+        return dir.mkdirs();
+    }
+
+    /**
+     * 删除文件
+     *
+     * @param filePathAndName String 文件路径及名称 如c:/fqf.txt
+     *                        String
+     */
+    public static void delFile(String filePathAndName) {
+        try {
+            File myDelFile = new File(filePathAndName);
+            if (!myDelFile.delete()) {
+                System.out.println("删除文件失败");
+            }
+
+        } catch (Exception e) {
+            System.out.println("删除文件操作出错");
+            e.printStackTrace();
+
+        }
+
+    }
+
+    /**
+     * 读取到字节数组
+     *
+     * @param filePath //路径
+     */
+    public static byte[] getContent(String filePath) throws IOException {
+        File file = new File(filePath);
+        long fileSize = file.length();
+        if (fileSize > Integer.MAX_VALUE) {
+            System.out.println("file too big...");
+            return null;
+        }
+        FileInputStream fi = new FileInputStream(file);
+        byte[] buffer = new byte[(int) fileSize];
+        int offset = 0;
+        int numRead;
+        while (offset < buffer.length
+                && (numRead = fi.read(buffer, offset, buffer.length - offset)) >= 0) {
+            offset += numRead;
+        }
+        // 确保所有数据均被读取
+        if (offset != buffer.length) {
+            throw new IOException("Could not completely read file "
+                    + file.getName());
+        }
+        fi.close();
+        return buffer;
+    }
+
+    /**
+     * 读取到字节数组1
+     */
+    public static byte[] toByteArray(String filePath) throws IOException {
+
+        File f = new File(filePath);
+        if (!f.exists()) {
+            throw new FileNotFoundException(filePath);
+        }
+        BufferedInputStream in = null;
+        try (ByteArrayOutputStream bos = new ByteArrayOutputStream((int) f.length())) {
+            in = new BufferedInputStream(new FileInputStream(f));
+            int buf_size = 1024;
+            byte[] buffer = new byte[buf_size];
+            int len;
+            while (-1 != (len = in.read(buffer, 0, buf_size))) {
+                bos.write(buffer, 0, len);
+            }
+            return bos.toByteArray();
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw e;
+        } finally {
+            try {
+                if (in != null) {
+                    in.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+        }
+    }
+
+    /**
+     * 读取到字节数组2
+     */
+    public static byte[] toByteArray2(String filePath) throws IOException {
+
+        File f = new File(filePath);
+        if (!f.exists()) {
+            throw new FileNotFoundException(filePath);
+        }
+
+        FileChannel channel = null;
+        FileInputStream fs = null;
+        try {
+            fs = new FileInputStream(f);
+            channel = fs.getChannel();
+            ByteBuffer byteBuffer = ByteBuffer.allocate((int) channel.size());
+//            while ((channel.read(byteBuffer)) > 0) {
+//                // do nothing
+//                // System.out.println("reading");
+//            }
+            return byteBuffer.array();
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw e;
+        } finally {
+            try {
+                if (channel != null) {
+                    channel.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            try {
+                if (fs != null) {
+                    fs.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    /**
+     * Mapped File way MappedByteBuffer 可以在处理大文件时，提升性能
+     */
+    public static byte[] toByteArray3(String filePath) throws IOException {
+
+        FileChannel fc = null;
+        RandomAccessFile rf = null;
+        try {
+            rf = new RandomAccessFile(filePath, "r");
+            fc = rf.getChannel();
+            MappedByteBuffer byteBuffer = fc.map(FileChannel.MapMode.READ_ONLY, 0,
+                    fc.size()).load();
+            //System.out.println(byteBuffer.isLoaded());
+            byte[] result = new byte[(int) fc.size()];
+            if (byteBuffer.remaining() > 0) {
+                // System.out.println("remain");
+                byteBuffer.get(result, 0, byteBuffer.remaining());
+            }
+            return result;
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw e;
+        } finally {
+            try {
+                if (rf != null) {
+                    rf.close();
+                }
+                if (fc != null) {
+                    fc.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    /**
+     * 把字节数组写入文件
+     */
+    public static void writeByteArrToFile(byte[] bfile, String fileFullPath) {
+        BufferedOutputStream bos = null;
+        FileOutputStream fos = null;
+        File file;
+        try {
+            file = new File(fileFullPath);
+            fos = new FileOutputStream(file);
+            bos = new BufferedOutputStream(fos);
+            bos.write(bfile);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (bos != null) {
+                try {
+                    bos.close();
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+            }
+            if (fos != null) {
+                try {
+                    fos.close();
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+            }
+        }
+    }
+
+    /**
+     * 获取网络文件
+     */
+    public static byte[] getHttpFileUrl(String templateUrl) throws IOException {
+
+        byte[] outByte;
+
+        //打开网络输入流
+        DataInputStream dis = new DataInputStream(new URL(templateUrl).openStream());
+        ByteArrayOutputStream fos = new ByteArrayOutputStream();
+
+        byte[] buffer = new byte[1024];
+        int length;
+        //开始填充数据
+        while ((length = dis.read(buffer)) > 0) {
+            fos.write(buffer, 0, length);
+        }
+
+        outByte = fos.toByteArray();
+
+        dis.close();
+        fos.close();
+        return outByte;
+    }
+
 }

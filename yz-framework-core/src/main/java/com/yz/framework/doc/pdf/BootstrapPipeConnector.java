@@ -1,8 +1,8 @@
-package com.yz.framework.pdf;
+package com.yz.framework.doc.pdf;
 
 import com.sun.star.comp.helper.BootstrapException;
 import com.sun.star.uno.XComponentContext;
-import com.yz.framework.pdf.server.OOoServer;
+import com.yz.framework.doc.pdf.server.OOoServer;
 
 import java.security.SecureRandom;
 

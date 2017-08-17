@@ -1,8 +1,8 @@
-package com.yz.framework.pdf;
+package com.yz.framework.doc.pdf;
 
 import com.sun.star.comp.helper.BootstrapException;
 import com.sun.star.uno.XComponentContext;
-import com.yz.framework.pdf.server.OOoServer;
+import com.yz.framework.doc.pdf.server.OOoServer;
 
 /**
  * A Bootstrap Connector which uses a socket to connect to an OOo server.

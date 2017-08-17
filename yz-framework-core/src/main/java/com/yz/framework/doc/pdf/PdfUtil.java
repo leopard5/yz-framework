@@ -1,4 +1,4 @@
-package com.yz.framework.pdf;
+package com.yz.framework.doc.pdf;
 
 import com.sun.star.comp.helper.BootstrapException;
 import com.sun.star.frame.XComponentLoader;
