@@ -1,4 +1,4 @@
-package com.yz.framework.queue.rabbitmq.converter;
+package com.yz.framework.queue.converter;
 
 import com.alibaba.fastjson.JSON;
 import org.slf4j.Logger;
