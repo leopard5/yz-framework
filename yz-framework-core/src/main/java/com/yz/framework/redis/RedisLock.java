@@ -10,6 +10,7 @@ public class RedisLock implements Serializable {
 
 	private static final long serialVersionUID = 2110859698214399370L;
 	private static final int DEFAULT_TIME_OUT = 120 * 1000;
+	private static final long RETRY_LOCK_TIME_MILLISECONDS = 50;
 	private String timeout;
 	private boolean hasLock;
 	private StringRedisTemplateEX redisTemplate;
@@ -47,7 +48,7 @@ public class RedisLock implements Serializable {
 	public boolean lock() {
 		try {
 			while (!acquireLock()) {
-				Thread.sleep(200);
+				Thread.sleep(RETRY_LOCK_TIME_MILLISECONDS);
 			}
 		} catch (InterruptedException e) {
 			hasLock = false;
