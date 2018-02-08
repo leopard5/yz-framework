@@ -14,6 +14,10 @@ import java.io.*;
 import java.lang.reflect.Field;
 import java.util.*;
 
+/**
+ * @author yazhoing.qi
+ * @date 2018-02-08
+ */
 public abstract class ExcelUtil {
 
     /**

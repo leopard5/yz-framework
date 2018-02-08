@@ -11,56 +11,6 @@ package com.yz.framework.constant;
  */
 public interface Constants {
 
-    /**
-     * 数字0
-     */
-    public static final int NUM_INT0 = 0;
-    /**
-     * 数字1
-     */
-    public static final int NUM_INT1 = 1;
-    /**
-     * 数字2
-     */
-    public static final int NUM_INT2 = 2;
-    /**
-     * 数字3
-     */
-    public static final int NUM_INT3 = 3;
-    /**
-     * 数字4
-     */
-    public static final int NUM_INT4 = 4;
-
-    /**
-     * 数字48
-     */
-    public static final int NUM_INT48 = 48;
-    /**
-     * 数字57
-     */
-    public static final int NUM_INT57 = 57;
-    /**
-     * 数字64
-     */
-    public static final int NUM_INT64 = 64;
-    /**
-     * 数字65
-     */
-    public static final int NUM_INT65 = 65;
-    /**
-     * 数字常量90
-     */
-    public static final int NUM_INT90 = 90;
-    /**
-     * 数字常量97
-     */
-    public static final int NUM_INT97 = 97;
-    public static final int NUM_INT100 = 100;
-    /**
-     * 数字常量122
-     */
-    public static final int NUM_INT122 = 122;
     public static final int NUM_INT255 = 255;
     /**
      * 数字常量256

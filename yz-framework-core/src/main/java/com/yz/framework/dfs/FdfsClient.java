@@ -2,13 +2,7 @@ package com.yz.framework.dfs;
 
 import org.csource.common.IniFileReader;
 import org.csource.common.NameValuePair;
-import org.csource.fastdfs.ClientGlobal;
-import org.csource.fastdfs.DownloadStream;
-import org.csource.fastdfs.StorageClient1;
-import org.csource.fastdfs.StorageServer;
-import org.csource.fastdfs.TrackerClient;
-import org.csource.fastdfs.TrackerServer;
-import org.csource.fastdfs.UploadStream;
+import org.csource.fastdfs.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -71,10 +65,13 @@ public class FdfsClient {
         } catch (Exception e) {
             logger.error("FDFS上传异常", e);
         } finally {
-            //此处不关闭storage server的原因是它的API已经帮我们进行了关闭
             try {
-                if (trackerServer != null)
+                if (trackerServer != null) {
                     trackerServer.close();
+                }
+                if (storageServer != null) {
+                    storageServer.close();
+                }
             } catch (IOException e) {
                 logger.error("Tracker Server Connection关闭异常", e);
             }
@@ -108,8 +105,9 @@ public class FdfsClient {
         } finally {
             //此处不关闭storage server的原因是它的API已经帮我们进行了关闭
             try {
-                if (trackerServer != null)
+                if (trackerServer != null) {
                     trackerServer.close();
+                }
             } catch (IOException e) {
                 logger.error("Tracker Server Connection关闭异常", e);
             }
@@ -145,8 +143,9 @@ public class FdfsClient {
         } finally {
             //此处不关闭storage server的原因是它的API已经帮我们进行了关闭
             try {
-                if (trackerServer != null)
+                if (trackerServer != null) {
                     trackerServer.close();
+                }
             } catch (IOException e) {
                 logger.error("Tracker Server Connection关闭异常", e);
             }
@@ -174,8 +173,9 @@ public class FdfsClient {
         } finally {
             //此处不关闭storage server的原因是它的API已经帮我们进行了关闭
             try {
-                if (trackerServer != null)
+                if (trackerServer != null) {
                     trackerServer.close();
+                }
             } catch (IOException e) {
                 logger.error("Tracker Server Connection关闭异常", e);
             }
@@ -203,8 +203,9 @@ public class FdfsClient {
         } finally {
             //此处不关闭storage server的原因是它的API已经帮我们进行了关闭
             try {
-                if (trackerServer != null)
+                if (trackerServer != null) {
                     trackerServer.close();
+                }
             } catch (IOException e) {
                 logger.error("Tracker Server Connection关闭异常", e);
             }
