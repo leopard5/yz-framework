@@ -205,7 +205,7 @@ public abstract class RedisCache<TValue> implements InitializingBean, Disposable
             for (String redisKey : redisKeyList) {
                 putRemoveQueue(redisKey);
             }
-            LOGGER.error("delete", "删除优惠券失败", e);
+            LOGGER.error("delete", "删除失败", e);
         }
     }
 

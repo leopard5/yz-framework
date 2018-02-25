@@ -84,7 +84,7 @@ public class ZookeeperLocalCacheFactory extends AbstractCacheFactory {
     /**
      * 为该依赖节点添加一个监听器，如果该节点不存在，则添加该节点
      *
-     * @param dependecyKey
+     * @param dependencies
      *            void
      * @throws InterruptedException
      * @throws KeeperException
@@ -175,15 +175,7 @@ public class ZookeeperLocalCacheFactory extends AbstractCacheFactory {
 
     }
 
-    /*
-     * (非Javadoc) <p>Title: notifyCacheRefresh</p> <p>Description: </p>
-     *
-     * @param dependecyKey
-     *
-     * @see
-     * com.yz.framework.zookeeper.CacheFactory#notifyCacheRefresh(java.lang
-     * .String)
-     */
+    @Override
     public void expire(Object dependency) {
         addToUpdateDependencyQueue(dependency);
     }
@@ -208,15 +200,6 @@ public class ZookeeperLocalCacheFactory extends AbstractCacheFactory {
         return watcher;
     }
 
-    /*
-     * (非Javadoc) <p>Title: getObject</p> <p>Description: </p>
-     *
-     * @param cacheObjectkey
-     *
-     * @return
-     *
-     * @see com.yz.framework.zookeeper.CacheFactory#getObject(java.lang.String)
-     */
     @Override
     @SuppressWarnings("unchecked")
     public <T> T getObject(String cacheObjectkey) {

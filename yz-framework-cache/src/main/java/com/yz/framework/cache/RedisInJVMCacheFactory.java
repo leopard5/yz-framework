@@ -100,6 +100,7 @@ public class RedisInJVMCacheFactory extends AbstractCacheFactory {
         return null;
     }
 
+    @Override
     @SuppressWarnings("unchecked")
     public <T> T getObject(String cacheObjectkey, Class<T> clazz) {
         return getObject(cacheObjectkey);
