@@ -92,6 +92,7 @@ public class CommonUtil {
 
     /**
      * 判断字符是否是数字
+     *
      * @param sch
      * @return
      */
@@ -877,7 +878,7 @@ public class CommonUtil {
     }
 
     public static long getTimeUnix() {
-        return new Date().getTime();
+        return System.currentTimeMillis();
     }
 
     /**
@@ -912,25 +913,28 @@ public class CommonUtil {
 
     public static Collection union(Collection a, Collection b) {
         ArrayList al = new ArrayList();
-        if (a != null)
+        if (a != null) {
             al.addAll(a);
+        }
         if (b != null) {
             Iterator it = b.iterator();
             while (it.hasNext()) {
                 Object o = it.next();
-                if (!al.contains(o))
+                if (!al.contains(o)) {
                     al.add(o);
+                }
             }
         }
         return al;
     }
 
     public static final boolean eq(Object left, Object right) {
-        if ((left == null) && (right == null))
+        if ((left == null) && (right == null)) {
             return true;
-        if ((left == null) || (right == null))
+        }
+        if ((left == null) || (right == null)) {
             return false;
-
+        }
         if (((left instanceof Date)) && ((right instanceof Date))) {
             return ((Date) left).getTime() / 1000L == ((Date) right).getTime() / 1000L;
         }
@@ -938,10 +942,12 @@ public class CommonUtil {
     }
 
     public static boolean eqw(String left, String right) {
-        if (left == null)
+        if (left == null) {
             left = "";
-        if (right == null)
+        }
+        if (right == null) {
             right = "";
+        }
         return left.trim().equals(right.trim());
     }
 
@@ -995,28 +1001,33 @@ public class CommonUtil {
     }
 
     public static boolean arrayContains(Object[] array, Object needle) {
-        if ((array == null) || (array.length == 0))
+        if ((array == null) || (array.length == 0)) {
             return false;
-        if (!array[0].getClass().equals(needle.getClass()))
+        }
+        if (!array[0].getClass().equals(needle.getClass())) {
             return false;
+        }
         for (int i = 0; i < array.length; i++) {
-            if (needle.equals(array[i]))
+            if (needle.equals(array[i])) {
                 return true;
+            }
         }
         return false;
     }
 
     public static String getCodeSourceLocation(Class cls) {
-        if (cls.getProtectionDomain().getCodeSource() != null)
+        if (cls.getProtectionDomain().getCodeSource() != null) {
             return cls.getProtectionDomain().getCodeSource().getLocation()
                     .getFile();
+        }
         return null;
     }
 
     public static synchronized int getUniqueInt() {
         UniqueInt += 1;
-        if (UniqueInt == 100000000)
+        if (UniqueInt == 100000000) {
             UniqueInt = 1000;
+        }
         return UniqueInt;
     }
 }
