@@ -368,18 +368,19 @@ public class StringUtil {
             fs = new FileInputStream(tempFile);
             ir = new InputStreamReader(fs, encoding);
             br = new BufferedReader(ir, 2048);
-        StringBuffer sb = new StringBuffer();
-        String s = null;
-        while ((s = br.readLine()) != null)
-            sb.append(s).append(LINE);
+            StringBuffer sb = new StringBuffer();
+            String s = null;
+            while ((s = br.readLine()) != null) {
+                sb.append(s).append(LINE);
+            }
             str = sb.toString();
-        for (Iterator it = var.keySet().iterator(); it.hasNext(); ) {
-            String key = it.next().toString();
-            str = str.replaceAll("\\$\\{" + key + "\\}", var.get(key)
-                    .toString());
-        }
-        // 替换所有未定义的${}
-        str = str.replaceAll("\\$\\{.*\\}", "");
+            for (Iterator it = var.keySet().iterator(); it.hasNext(); ) {
+                String key = it.next().toString();
+                str = str.replaceAll("\\$\\{" + key + "\\}", var.get(key)
+                        .toString());
+            }
+            // 替换所有未定义的${}
+            str = str.replaceAll("\\$\\{.*\\}", "");
         } catch (Exception e) {
             e.printStackTrace();
         } finally {

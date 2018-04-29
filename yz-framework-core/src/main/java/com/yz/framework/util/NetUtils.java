@@ -1,38 +1,47 @@
 package com.yz.framework.util;
 
+import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.net.InetAddress;
-import java.net.InetSocketAddress;
-import java.net.NetworkInterface;
-import java.net.ServerSocket;
-import java.net.UnknownHostException;
+import java.net.*;
+import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.List;
 import java.util.Random;
 import java.util.regex.Pattern;
 
-import java.net.Socket;
-import java.net.SocketAddress;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.regex.Pattern;
-
-
 public class NetUtils {
-    private static final Logger logger = LoggerFactory.getLogger(NetUtils.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(NetUtils.class);
 
     private static final int MIN_PORT = 0;
     private static final int MAX_PORT = 65535;
+    private static final String ALL = "*";
+
+    public static final String ANY_HOST = "0.0.0.0";
+    /**
+     * 本机地址正则
+     */
+    private static final Pattern LOCAL_IP_PATTERN = Pattern.compile("127(\\.\\d{1,3}){3}$");
+
+    /**
+     * IPv4地址
+     */
+    public static final Pattern IPV4_PATTERN = Pattern
+            .compile(
+                    "^(25[0-5]|2[0-4]\\d|[0-1]?\\d?\\d)(\\.(25[0-5]|2[0-4]\\d|[0-1]?\\d?\\d)){3}$");
+    private static final Pattern ADDRESS_PATTERN = Pattern.compile("^\\d{1,3}(\\.\\d{1,3}){3}\\:\\d{1,5}$");
+    private static final Pattern IP_PATTERN = Pattern.compile("\\d{1,3}(\\.\\d{1,3}){3,5}$");
 
     public static final String LOCALHOST = "127.0.0.1";
-    public static final String ANYHOST = "0.0.0.0";
 
     private static final int RND_PORT_START = 30000;
     private static final int RND_PORT_RANGE = 10000;
 
     private static final Random RANDOM = new Random(System.currentTimeMillis());
+
 
     public static int getRandomPort() {
         return RND_PORT_START + RANDOM.nextInt(RND_PORT_RANGE);
@@ -80,36 +89,10 @@ public class NetUtils {
     }
 
 
-
-    public static boolean isInvalidPort(int port) {
-        return port > MIN_PORT && port <= MAX_PORT;
-    }
-
-    private static final Pattern ADDRESS_PATTERN = Pattern.compile("^\\d{1,3}(\\.\\d{1,3}){3}\\:\\d{1,5}$");
-
     public static boolean isValidAddress(String address) {
         return ADDRESS_PATTERN.matcher(address).matches();
     }
 
-    private static final Pattern LOCAL_IP_PATTERN = Pattern.compile("127(\\.\\d{1,3}){3}$");
-
-    public static boolean isLocalHost(String host) {
-        return host != null
-                && (LOCAL_IP_PATTERN.matcher(host).matches()
-                || host.equalsIgnoreCase("localhost"));
-    }
-
-    public static boolean isAnyHost(String host) {
-        return "0.0.0.0".equals(host);
-    }
-
-    public static boolean isInvalidLocalHost(String host) {
-        return host == null
-                || host.length() == 0
-                || host.equalsIgnoreCase("localhost")
-                || host.equals("0.0.0.0")
-                || (LOCAL_IP_PATTERN.matcher(host).matches());
-    }
 
     public static boolean isValidLocalHost(String host) {
         return !isInvalidLocalHost(host);
@@ -120,17 +103,6 @@ public class NetUtils {
                 new InetSocketAddress(port) : new InetSocketAddress(host, port);
     }
 
-    private static final Pattern IP_PATTERN = Pattern.compile("\\d{1,3}(\\.\\d{1,3}){3,5}$");
-
-    private static boolean isValidAddress(InetAddress address) {
-        if (address == null || address.isLoopbackAddress())
-            return false;
-        String name = address.getHostAddress();
-        return (name != null
-                && !ANYHOST.equals(name)
-                && !LOCALHOST.equals(name)
-                && IP_PATTERN.matcher(name).matches());
-    }
 
     public static String getLocalHost() {
         InetAddress address = getLocalAddress();
@@ -138,19 +110,6 @@ public class NetUtils {
     }
 
     private static volatile InetAddress LOCAL_ADDRESS = null;
-
-    /**
-     * 遍历本地网卡，返回第一个合理的IP。
-     *
-     * @return 本地网卡IP
-     */
-    public static InetAddress getLocalAddress() {
-        if (LOCAL_ADDRESS != null)
-            return LOCAL_ADDRESS;
-        InetAddress localAddress = getLocalAddress0();
-        LOCAL_ADDRESS = localAddress;
-        return localAddress;
-    }
 
     public static String getLogHost() {
         InetAddress address = LOCAL_ADDRESS;
@@ -165,7 +124,7 @@ public class NetUtils {
                 return localAddress;
             }
         } catch (Throwable e) {
-            logger.warn("Failed to retriving ip address, " + e.getMessage(), e);
+            LOGGER.warn("Failed to retriving ip address, " + e.getMessage(), e);
         }
         try {
             Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces();
@@ -182,19 +141,19 @@ public class NetUtils {
                                         return address;
                                     }
                                 } catch (Throwable e) {
-                                    logger.warn("Failed to retriving ip address, " + e.getMessage(), e);
+                                    LOGGER.warn("Failed to retriving ip address, " + e.getMessage(), e);
                                 }
                             }
                         }
                     } catch (Throwable e) {
-                        logger.warn("Failed to retriving ip address, " + e.getMessage(), e);
+                        LOGGER.warn("Failed to retriving ip address, " + e.getMessage(), e);
                     }
                 }
             }
         } catch (Throwable e) {
-            logger.warn("Failed to retriving ip address, " + e.getMessage(), e);
+            LOGGER.warn("Failed to retriving ip address, " + e.getMessage(), e);
         }
-        logger.error("Could not get local host ip address, will use 127.0.0.1 instead.");
+        LOGGER.error("Could not get local host ip address, will use 127.0.0.1 instead.");
         return localAddress;
     }
 
@@ -208,10 +167,6 @@ public class NetUtils {
         } catch (UnknownHostException e) {
             return hostName;
         }
-    }
-
-    public static String toAddressString(InetSocketAddress address) {
-        return address.getAddress().getHostAddress() + ":" + address.getPort();
     }
 
     public static InetSocketAddress toAddress(String address) {
@@ -232,25 +187,12 @@ public class NetUtils {
         StringBuilder sb = new StringBuilder();
         sb.append(protocol).append("://");
         sb.append(host).append(':').append(port);
-        if (path.charAt(0) != '/')
+        if (path.charAt(0) != '/') {
             sb.append('/');
+        }
         sb.append(path);
         return sb.toString();
     }
-
-    /**
-     * slf4j Logger for this class
-     */
-    private final static Logger LOGGER   = LoggerFactory.getLogger(NetUtils.class);
-
-    /**
-     * 最小端口
-     */
-    private static final int    MIN_PORT = 0;
-    /**
-     * 最大端口
-     */
-    private static final int    MAX_PORT = 65535;
 
     /**
      * 判断端口是否有效 0-65535
@@ -322,28 +264,12 @@ public class NetUtils {
                     IOUtils.closeQuietly(ss);
                 }
             }
-            throw new SofaRpcRuntimeException("Can't bind to ANY port of " + host + ", please check config");
+            throw new RuntimeException("Can't bind to ANY port of " + host + ", please check config");
         } else {
-            throw new SofaRpcRuntimeException("The host " + host
+            throw new RuntimeException("The host " + host
                     + " is not found in network cards, please check config");
         }
     }
-
-    /**
-     * 任意地址
-     */
-    public static final String   ANYHOST          = "0.0.0.0";
-    /**
-     * 本机地址正则
-     */
-    private static final Pattern LOCAL_IP_PATTERN = Pattern.compile("127(\\.\\d{1,3}){3}$");
-
-    /**
-     * IPv4地址
-     */
-    public static final Pattern  IPV4_PATTERN     = Pattern
-            .compile(
-                    "^(25[0-5]|2[0-4]\\d|[0-1]?\\d?\\d)(\\.(25[0-5]|2[0-4]\\d|[0-1]?\\d?\\d)){3}$");
 
     /**
      * 是否本地地址 127.x.x.x 或者 localhost
@@ -363,7 +289,7 @@ public class NetUtils {
      * @return 是否默认地址
      */
     public static boolean isAnyHost(String host) {
-        return ANYHOST.equals(host);
+        return ANY_HOST.equals(host);
     }
 
     /**
@@ -386,7 +312,8 @@ public class NetUtils {
     static boolean isInvalidLocalHost(String host) {
         return StringUtils.isBlank(host)
                 || isAnyHost(host)
-                || isLocalHost(host);
+                || isLocalHost(host)
+                || (LOCAL_IP_PATTERN.matcher(host).matches());
     }
 
     /**
@@ -587,9 +514,9 @@ public class NetUtils {
                 if (defaultPort == null && s1[1] != null && s1[1].length() > 0) {
                     defaultPort = s1[1];
                 }
-                ips.add(new String[] { s1[0], s1[1] }); // 得到ip和端口
+                ips.add(new String[]{s1[0], s1[1]}); // 得到ip和端口
             } else {
-                ips.add(new String[] { s1[0], defaultPort });
+                ips.add(new String[]{s1[0], defaultPort});
             }
         }
 
@@ -616,18 +543,20 @@ public class NetUtils {
      */
     public static boolean isMatchIPByPattern(String whiteList, String localIP) {
         if (StringUtils.isNotBlank(whiteList)) {
-            if (StringUtils.ALL.equals(whiteList)) {
+            if (ALL.equals(whiteList)) {
                 return true;
             }
             for (String ips : whiteList.replace(',', ';').split(";", -1)) {
                 try {
-                    if (ips.contains(StringUtils.ALL)) { // 带通配符
+                    // 带通配符
+                    if (ips.contains(ALL)) {
                         String regex = ips.trim().replace(".", "\\.").replace("*", ".*");
                         Pattern pattern = Pattern.compile(regex);
                         if (pattern.matcher(localIP).find()) {
                             return true;
                         }
-                    } else if (!isIPv4Host(ips)) { // 不带通配符的正则表达式
+                        // 不带通配符的正则表达式
+                    } else if (!isIPv4Host(ips)) {
                         String regex = ips.trim().replace(".", "\\.");
                         Pattern pattern = Pattern.compile(regex);
                         if (pattern.matcher(localIP).find()) {
