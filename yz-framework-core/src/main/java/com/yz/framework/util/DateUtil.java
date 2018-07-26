@@ -1,13 +1,3 @@
-/**
- * yz-framework-core
- * DateUtil.java
- * com.yz.framework.util
- *
- * @author yazhong
- * @date 2015年9月29日 上午11:18:27
- * @version 1.0
- */
-
 package com.yz.framework.util;
 
 import javax.xml.datatype.DatatypeConfigurationException;
@@ -31,7 +21,7 @@ import java.util.TimeZone;
  */
 public class DateUtil {
 
-	public static final long MILLI_SECONDS_IN_ONE_DAY = (long)(24 * 3600 * 1000);
+    public static final long MILLI_SECONDS_IN_ONE_DAY = (long) (24 * 3600 * 1000);
 
     //2001-07-04T12:08:56.235-07或2001-07-04T12:08:56.235Z
     public static final String PATTERN_ISO8601_ONELETTER = "yyyy-MM-dd'T'HH:mm:ss.SSSX";
@@ -362,13 +352,12 @@ public class DateUtil {
      * @return 相差天数
      * @throws ParseException
      */
-    public static long daysBetween(Date smdate,Date bdate)
-    {
-    	Date dTime1 = minInDay(smdate);
-    	Date dTime2 = minInDay(bdate);
-    	if (dTime1 == null || dTime2 == null){
-    		return 0;
-		}
+    public static long daysBetween(Date smdate, Date bdate) {
+        Date dTime1 = minInDay(smdate);
+        Date dTime2 = minInDay(bdate);
+        if (dTime1 == null || dTime2 == null) {
+            return 0;
+        }
         long time1 = dTime1.getTime();
         long time2 = dTime2.getTime();
 
