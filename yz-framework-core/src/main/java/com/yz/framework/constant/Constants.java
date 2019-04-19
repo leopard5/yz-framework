@@ -6,7 +6,6 @@ package com.yz.framework.constant;
  * </p>
  *
  * @author yazhong.qi
- * @see
  * @since 1.0
  */
 public interface Constants {
