@@ -277,24 +277,6 @@
                 <scope>test</scope>
             </dependency>
             <dependency>
-                <groupId>org.easymock</groupId>
-                <artifactId>easymock</artifactId>
-                <version>${easymock_version}</version>
-                <scope>test</scope>
-            </dependency>
-            <dependency>
-                <groupId>com.googlecode.jmockit</groupId>
-                <artifactId>jmockit</artifactId>
-                <version>${jmockit_version}</version>
-                <scope>test</scope>
-            </dependency>
-            <dependency>
-                <groupId>org.easymock</groupId>
-                <artifactId>easymockclassextension</artifactId>
-                <version>${easymock_version}</version>
-                <scope>test</scope>
-            </dependency>
-            <dependency>
                 <groupId>cglib</groupId>
                 <artifactId>cglib-nodep</artifactId>
                 <version>${cglib_version}</version>
@@ -316,31 +298,11 @@
                 <artifactId>fastjson</artifactId>
                 <version>${fastjson_version}</version>
             </dependency>
-
-            <dependency>
-                <groupId>org.apache.camel</groupId>
-                <artifactId>camel-beanstalk</artifactId>
-                <version>2.15.1</version>
-            </dependency>
-
-            <dependency>
-                <groupId>com.surftools</groupId>
-                <artifactId>BeanstalkClient</artifactId>
-                <version>1.4.6</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.mongodb</groupId>
-                <artifactId>mongo-java-driver</artifactId>
-                <version>3.0.0-rc1</version>
-            </dependency>
-
             <dependency>
                 <groupId>org.springframework.data</groupId>
                 <artifactId>spring-data-mongodb</artifactId>
-                <version>1.7.0.RELEASE</version>
+                <version>2.2.0.M3</version>
             </dependency>
-
             <dependency>
                 <groupId>commons-codec</groupId>
                 <artifactId>commons-codec</artifactId>
@@ -359,12 +321,12 @@
             <dependency>
                 <groupId>jaxen</groupId>
                 <artifactId>jaxen</artifactId>
-                <version>1.1.1</version>
+                <version>1.1.6</version>
             </dependency>
             <dependency>
                 <groupId>org.quartz-scheduler</groupId>
                 <artifactId>quartz</artifactId>
-                <version>2.2.1</version>
+                <version>2.3.0</version>
             </dependency>
             <dependency>
                 <groupId>commons-collections</groupId>

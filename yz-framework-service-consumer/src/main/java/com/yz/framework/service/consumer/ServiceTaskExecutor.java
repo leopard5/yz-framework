@@ -9,7 +9,6 @@ import org.springframework.util.StringUtils;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.surftools.BeanstalkClient.BeanstalkException;
 import com.yz.framework.bizlogging.BizLogger;
 import com.yz.framework.config.ConfigManager;
 import com.yz.framework.job.ServiceJob;
@@ -45,8 +44,6 @@ public class ServiceTaskExecutor implements Runnable {
 					LOGGER.debug("get job " + job.getMessageId());
 				}
 				doWork(job);
-			} catch (BeanstalkException be) {
-				LOGGER.error("start", LOGGER.getDetailMessage(be));
 			} catch (Exception e) {
 				LOGGER.error("start", e);
 				if (job != null) {

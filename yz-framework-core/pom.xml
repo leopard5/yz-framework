@@ -143,78 +143,47 @@
             <version>4.0</version>
         </dependency>
 
-
-        <!-- fastdfs-client -->
         <dependency>
-            <groupId>org.csource</groupId>
+            <groupId>net.oschina.zcx7878</groupId>
             <artifactId>fastdfs-client-java</artifactId>
-            <version>1.25</version>
+            <version>1.27.0.0</version>
         </dependency>
-
-        <!-- openoffice pdf converter -->
         <dependency>
-            <groupId>juh</groupId>
+            <groupId>org.openoffice</groupId>
             <artifactId>juh</artifactId>
-            <version>3.2.1</version>
+            <version>4.1.2</version>
         </dependency>
         <dependency>
-            <groupId>jur</groupId>
-            <artifactId>jur</artifactId>
-            <version>3.2.1</version>
-        </dependency>
-        <dependency>
-            <groupId>ridl</groupId>
-            <artifactId>ridl</artifactId>
-            <version>3.2.1</version>
-        </dependency>
-        <dependency>
-            <groupId>unoil</groupId>
+            <groupId>org.openoffice</groupId>
             <artifactId>unoil</artifactId>
-            <version>3.2.1</version>
+            <version>4.1.2</version>
         </dependency>
-        <!-- openoffice pdf converter end -->
-
-        <!--http://maven.outofmemory.cn/com.itextpdf/itext-asian/5.2.0/ -->
         <dependency>
             <groupId>com.itextpdf</groupId>
             <artifactId>itext-asian</artifactId>
             <version>5.2.0</version>
-        </dependency>
-
-        <!-- https://mvnrepository.com/artifact/com.lowagie/itext -->
-        <dependency>
-            <groupId>com.lowagie</groupId>
-            <artifactId>itext</artifactId>
-            <version>4.2.2</version>
         </dependency>
         <dependency>
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
             <version>2.5</version>
         </dependency>
-
-        <!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
-        <!--<dependency>-->
-            <!--<groupId>org.projectlombok</groupId>-->
-            <!--<artifactId>lombok</artifactId>-->
-            <!--<version>1.16.22</version>-->
-            <!--<scope>provided</scope>-->
-        <!--</dependency>-->
-
-        <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.16.22</version>
+            <scope>provided</scope>
+        </dependency>
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
             <version>3.7</version>
         </dependency>
-
-        <!-- https://mvnrepository.com/artifact/org.reflections/reflections -->
         <dependency>
             <groupId>org.reflections</groupId>
             <artifactId>reflections</artifactId>
             <version>0.9.11</version>
         </dependency>
-
     </dependencies>
 
 </project>
