@@ -19,9 +19,12 @@ import com.yz.framework.queue.JobMessage;
 import com.yz.framework.security.ApiInvokerUtil;
 import com.yz.framework.util.ApplicationContextUtil;
 
+/**
+ * @author yazhong.qi
+ */
 public class ServiceTaskExecutor implements Runnable {
 
-	public static final Logger LOGGER = Logger.getLogger(ServiceTaskExecutor.class);
+	private static final Logger LOGGER = Logger.getLogger(ServiceTaskExecutor.class);
 	private ServiceInvokeWorker worker;
 	private Consumer serviceConsumer;
 

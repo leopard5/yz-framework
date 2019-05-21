@@ -9,14 +9,7 @@ import java.util.*;
 import java.util.regex.Pattern;
 
 /**
- * Description: <br>
- * 该类用于String的一些辅助操作。 <br>
- */
-
-/**
  * @author yazhong.qi
- * @version 1.0
- * @date 2017年6月18日 上午9:59:12
  */
 public class StringUtil {
     public static Pattern patternHex = Pattern.compile("^[\\d|a-f|A-F]*$");
@@ -55,15 +48,21 @@ public class StringUtil {
     }
 
     public static String randomString(int length) {
-        if (length < 1) return UUID.randomUUID().toString();
+        if (length < 1) {
+            return UUID.randomUUID().toString();
+        }
         String ss = UUID.randomUUID().toString();
-        if (length >= ss.length()) return ss;
+        if (length >= ss.length()) {
+            return ss;
+        }
 
         return ss.substring(0, length);
     }
 
     public static String trim(String str, String trimedStr) {
-        if (str == null) return str;
+        if (str == null) {
+            return str;
+        }
 
         String patternStr = Pattern.quote(trimedStr);
         StringBuilder regex = new StringBuilder().append("^(?:").append(patternStr)
@@ -102,7 +101,9 @@ public class StringUtil {
     }
 
     public static boolean contains(String[] strs, String value) {
-        if (strs == null) return false;
+        if (strs == null) {
+            return false;
+        }
 
         for (int i = 0; i < strs.length; i++) {
             if (strs[i].equals(value)) {
@@ -113,7 +114,9 @@ public class StringUtil {
     }
 
     public static String getEmailPrefix(String email) {
-        if (StringUtil.isNullorEmpty(email)) return "";
+        if (StringUtil.isNullorEmpty(email)) {
+            return "";
+        }
 
         int index = email.indexOf("@");
         if (index > 0) {
@@ -147,14 +150,16 @@ public class StringUtil {
     public static String fillString(String source, String fillStr, int length,
                                     int fillType) {
         int len = source.length();
-        if (len >= length)
+        if (len >= length) {
             return fillType == FILL_TYPE_LEFT ? source.substring(len - length)
                     : source.substring(0, length);
+        }
         int i = 0;
-        while (source.length() < length)
+        while (source.length() < length) {
             source = ((fillType == FILL_TYPE_LEFT) || (fillType == FILL_TYPE_BOTH && (i++) % 2 == 0)) ? fillStr
                     + source
                     : source + fillStr;
+        }
         return (fillType == FILL_TYPE_RIGHT) ? source.substring(0, length)
                 : source.substring(source.length() - length, source.length());
 
@@ -183,7 +188,6 @@ public class StringUtil {
 
     /**
      * Description : 字符串转List <br>
-     * Created on 2007-5-22 17:58:08 <br>
      *
      * @param p_Param
      * @param p_Delim
@@ -216,8 +220,9 @@ public class StringUtil {
      */
     public static String array2String(Object[] rs, String split) {
         StringBuffer result = new StringBuffer(rs[0].toString());
-        for (int i = 1, n = rs.length; i < n; i++)
+        for (int i = 1, n = rs.length; i < n; i++) {
             result.append(split).append(rs[i]);
+        }
         return result.toString();
     }
 
@@ -307,8 +312,9 @@ public class StringUtil {
             v2 = moneyInt % 100;
             StringBuffer result = new StringBuffer();
             result.append(".");
-            if (v2 < 10)
+            if (v2 < 10) {
                 result.append("0");
+            }
             result.append(String.valueOf(v2));
             while (v1 >= 1000) {
                 v2 = (v1 - 1000) % 1000;

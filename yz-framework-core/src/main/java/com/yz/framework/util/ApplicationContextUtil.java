@@ -5,6 +5,9 @@ import org.springframework.beans.factory.support.BeanDefinitionValidationExcepti
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 
+/**
+ * @author yazhong.qi
+ */
 public class ApplicationContextUtil implements ApplicationContextAware {
 
     private static ApplicationContext applicationContext;

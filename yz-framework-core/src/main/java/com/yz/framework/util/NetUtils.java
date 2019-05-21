@@ -16,32 +16,30 @@ import java.util.regex.Pattern;
 public class NetUtils {
     private static final Logger LOGGER = LoggerFactory.getLogger(NetUtils.class);
 
-    private static final int MIN_PORT = 0;
-    private static final int MAX_PORT = 65535;
-    private static final String ALL = "*";
-
+    public static final String LOCALHOST = "127.0.0.1";
     public static final String ANY_HOST = "0.0.0.0";
-    /**
-     * 本机地址正则
-     */
-    private static final Pattern LOCAL_IP_PATTERN = Pattern.compile("127(\\.\\d{1,3}){3}$");
-
     /**
      * IPv4地址
      */
     public static final Pattern IPV4_PATTERN = Pattern
             .compile(
                     "^(25[0-5]|2[0-4]\\d|[0-1]?\\d?\\d)(\\.(25[0-5]|2[0-4]\\d|[0-1]?\\d?\\d)){3}$");
+
+    private static final int MIN_PORT = 0;
+    private static final int MAX_PORT = 65535;
+    private static final String ALL = "*";
+    /**
+     * 本机地址正则
+     */
+    private static final Pattern LOCAL_IP_PATTERN = Pattern.compile("127(\\.\\d{1,3}){3}$");
+
     private static final Pattern ADDRESS_PATTERN = Pattern.compile("^\\d{1,3}(\\.\\d{1,3}){3}\\:\\d{1,5}$");
     private static final Pattern IP_PATTERN = Pattern.compile("\\d{1,3}(\\.\\d{1,3}){3,5}$");
-
-    public static final String LOCALHOST = "127.0.0.1";
 
     private static final int RND_PORT_START = 30000;
     private static final int RND_PORT_RANGE = 10000;
 
     private static final Random RANDOM = new Random(System.currentTimeMillis());
-
 
     public static int getRandomPort() {
         return RND_PORT_START + RANDOM.nextInt(RND_PORT_RANGE);

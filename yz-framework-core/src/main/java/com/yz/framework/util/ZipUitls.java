@@ -38,14 +38,12 @@ public class ZipUitls {
                 try {
                     out.close();
                 } catch (IOException e) {
-                    e.printStackTrace();
                 }
             }
             if (outputStream != null) {
                 try {
                     outputStream.close();
                 } catch (IOException e) {
-                    e.printStackTrace();
                 }
             }
         }
